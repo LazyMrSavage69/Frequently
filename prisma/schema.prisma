@@ -1,0 +1,54 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id         Int      @id @default(autoincrement())
+  email      String   @unique @db.VarChar(191)
+  password   String   @db.VarChar(191)
+  created_at DateTime @default(now()) @map("created_at")
+
+  @@map("admin")
+}
+
+model Category {
+  id         Int        @id @default(autoincrement())
+  name       String     @unique @db.VarChar(191)
+  slug       String     @unique @db.VarChar(191)
+  created_at DateTime   @default(now()) @map("created_at")
+  questions  Question[]
+
+  @@map("categories")
+}
+
+model Question {
+  id           Int      @id @default(autoincrement())
+  title        String   @db.VarChar(191)
+  slug         String   @unique @db.VarChar(191)
+  answer       String   @db.Text
+  category_id  Int      @map("category_id")
+  is_published Boolean  @default(false) @map("is_published")
+  views_count  Int      @default(0) @map("views_count")
+  created_at   DateTime @default(now()) @map("created_at")
+  updated_at   DateTime @updatedAt @map("updated_at")
+
+  category Category @relation(fields: [category_id], references: [id], onDelete: Cascade)
+
+  @@map("questions")
+}
+
+model AdsSettings {
+  id        Int     @id @default(autoincrement())
+  provider  String  @db.VarChar(30) // ex: adsense
+  slot_id   String? @db.VarChar(100)
+  position  String  @db.VarChar(30) // header, sidebar, footer, between_content
+  is_active Boolean @default(false) @map("is_active")
+
+  @@map("ads_settings")
+}

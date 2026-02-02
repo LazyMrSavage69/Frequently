@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+/* Force light theme */
+:root {
+  color-scheme: light;
+}
+
+html, body {
+  background-color: #f9fafb !important;
+  color: #111827 !important;
+}
+
+/* Ensure no dark theme is applied */
+@media (prefers-color-scheme: dark) {
+  html, body {
+    background-color: #f9fafb !important;
+    color: #111827 !important;
+  }
+}
