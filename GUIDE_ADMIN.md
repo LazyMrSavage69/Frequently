@@ -8,6 +8,11 @@ L'interface d'administration est accessible uniquement via cette URL spéciale :
 http://localhost:3000/management/login
 ```
 
+Pour l'accès en production (Vercel) :
+```
+https://frequently.vercel.app/management/login
+```
+
 ⚠️ **Important** : Cette URL n'est visible nulle part sur le site public pour des raisons de sécurité.
 
 ### Identifiants de connexion
