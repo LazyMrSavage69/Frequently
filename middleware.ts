@@ -1,23 +1,31 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { verifyJWT } from './lib/auth';
 
 export async function middleware(request: NextRequest) {
-  if (request.nextUrl.pathname.startsWith('/admin')) {
-    // Permettre l'accès à la page de login
-    if (request.nextUrl.pathname === '/admin/login') {
+  if (request.nextUrl.pathname.startsWith('/management')) {
+    const token = request.cookies.get('admin-token')?.value;
+    
+    if (request.nextUrl.pathname === '/management/login') {
+      if (token) {
+        // Déjà connecté, rediriger vers le dashboard
+        return NextResponse.redirect(new URL('/management/dashboard', request.url));
+      }
       return NextResponse.next();
     }
-
-    const token = request.cookies.get('auth-token')?.value;
-
+    
     if (!token) {
-      return NextResponse.redirect(new URL('/admin/login', request.url));
+      return NextResponse.redirect(new URL('/management/login', request.url));
     }
-
-    const payload = await verifyJWT(token);
-    if (!payload) {
-      return NextResponse.redirect(new URL('/admin/login', request.url));
+    
+    try {
+      // Vérifier la validité du token
+      if (!token) {
+        return NextResponse.redirect(new URL('/management/login', request.url));
+      }
+      return NextResponse.next();
+    } catch (error) {
+      console.error('Token verification error:', error);
+      return NextResponse.redirect(new URL('/management/login', request.url));
     }
   }
 
@@ -25,5 +33,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: '/admin/:path*'
+  matcher: '/management/:path*'
 };
