@@ -34,7 +34,6 @@ export async function POST(request: NextRequest) {
       data: {
         name: data.name,
         slug: data.slug,
-        description: data.description,
       },
       include: {
         _count: {
