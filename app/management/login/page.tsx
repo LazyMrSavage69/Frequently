@@ -28,7 +28,8 @@ export default function AdminLoginPage() {
       const data = await response.json();
 
       if (response.ok) {
-        router.push('/management/dashboard');
+        // Force la redirection avec window.location pour s'assurer qu'elle fonctionne
+        window.location.href = '/management/dashboard';
       } else {
         setError(data.error || 'Erreur de connexion');
       }
