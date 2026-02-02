@@ -33,10 +33,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const token = await generateJWT({ adminId: admin.id });
+    const token = await generateJWT({ adminId: admin.id.toString() });
     const cookieStore = await cookies();
     
-    cookieStore.set('auth-token', token, {
+    cookieStore.set('admin-token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',

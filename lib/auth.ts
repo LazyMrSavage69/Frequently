@@ -32,7 +32,7 @@ export async function verifyJWT(token: string) {
 
 export async function getSession() {
   const cookieStore = await cookies();
-  const token = cookieStore.get('auth-token');
+  const token = cookieStore.get('admin-token');
   
   if (!token) return null;
   
