@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
-import { AdSlot } from '@/components/AdSlot'; 
+import { AdSlot } from '@/components/AdSlot';
 import { QuestionCard } from '@/components/QuestionCard';
 import { formatDate } from '@/lib/utils';
 import { Question } from '@/lib/types';
@@ -9,7 +9,7 @@ import Link from 'next/link';
 import { Eye, Calendar, ArrowLeft } from 'lucide-react';
 
 interface QuestionPageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 async function getQuestion(slug: string) {
@@ -48,8 +48,9 @@ async function getQuestion(slug: string) {
 }
 
 export async function generateMetadata({ params }: QuestionPageProps): Promise<Metadata> {
-  const data = await getQuestion(params.slug);
-  
+  const { slug } = await params;
+  const data = await getQuestion(slug);
+
   if (!data) {
     return {
       title: 'Question introuvable'
@@ -68,8 +69,9 @@ export async function generateMetadata({ params }: QuestionPageProps): Promise<M
 }
 
 export default async function QuestionPage({ params }: QuestionPageProps) {
-  const data = await getQuestion(params.slug);
-  
+  const { slug } = await params;
+  const data = await getQuestion(slug);
+
   if (!data) {
     notFound();
   }
@@ -104,11 +106,11 @@ export default async function QuestionPage({ params }: QuestionPageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
-      
+
       <article className="max-w-4xl mx-auto px-4 py-8">
         {/* Navigation */}
         <nav className="mb-6">
-          <Link 
+          <Link
             href="/questions"
             className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium"
           >
@@ -120,7 +122,7 @@ export default async function QuestionPage({ params }: QuestionPageProps) {
         {/* Header */}
         <header className="mb-8">
           <div className="flex flex-wrap items-center gap-4 mb-4">
-            <Link 
+            <Link
               href={`/categories/${question.category.slug}`}
               className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 hover:bg-blue-200 transition-colors"
             >
@@ -137,7 +139,7 @@ export default async function QuestionPage({ params }: QuestionPageProps) {
               </div>
             </div>
           </div>
-          
+
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
             {question.title}
           </h1>
@@ -148,7 +150,7 @@ export default async function QuestionPage({ params }: QuestionPageProps) {
         {/* Réponse */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 mb-8">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">Réponse officielle</h2>
-          <div 
+          <div
             className="prose prose-lg max-w-none text-gray-700 leading-relaxed"
             dangerouslySetInnerHTML={{ __html: question.answer.replace(/\n/g, '<br>') }}
           />

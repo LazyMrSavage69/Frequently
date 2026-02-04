@@ -19,13 +19,13 @@ interface SearchParams {
 }
 
 interface QuestionsPageProps {
-  searchParams: SearchParams;
+  searchParams: Promise<SearchParams>;
 }
 
 const QUESTIONS_PER_PAGE = 12;
 
-async function getQuestionsData(searchParams: SearchParams) {
-  const { q, category, page = '1' } = searchParams;
+async function getQuestionsData(resolvedSearchParams: SearchParams) {
+  const { q, category, page = '1' } = resolvedSearchParams;
   const currentPage = parseInt(page, 10);
   const skip = (currentPage - 1) * QUESTIONS_PER_PAGE;
 
@@ -33,8 +33,8 @@ async function getQuestionsData(searchParams: SearchParams) {
     is_published: true,
     ...(q && {
       OR: [
-        { title: { contains: q } },
-        { answer: { contains: q } }
+        { title: { contains: q, mode: 'insensitive' as const } },
+        { answer: { contains: q, mode: 'insensitive' as const } }
       ]
     }),
     ...(category && {
@@ -66,8 +66,9 @@ async function getQuestionsData(searchParams: SearchParams) {
 }
 
 export default async function QuestionsPage({ searchParams }: QuestionsPageProps) {
-  const { questions, totalCount, totalPages, currentPage, categories } = await getQuestionsData(searchParams);
-  const { q, category } = searchParams;
+  const resolvedSearchParams = await searchParams;
+  const { questions, totalCount, totalPages, currentPage, categories } = await getQuestionsData(resolvedSearchParams);
+  const { q, category } = resolvedSearchParams;
 
   const selectedCategory = categories.find(cat => cat.slug === category);
 
@@ -132,9 +133,9 @@ export default async function QuestionsPage({ searchParams }: QuestionsPageProps
             totalPages={totalPages}
             baseUrl="/questions"
             searchParams={new URLSearchParams(
-              Object.entries(searchParams)
+              Object.entries(resolvedSearchParams)
                 .filter(([_, value]) => value !== undefined && typeof value === 'string')
-                .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {})
+                .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {} as Record<string, string>)
             )}
           />
         </>

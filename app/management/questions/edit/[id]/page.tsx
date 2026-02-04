@@ -22,7 +22,7 @@ export default function EditQuestionPage() {
     const [error, setError] = useState('');
     const router = useRouter();
     const params = useParams();
-    const id = params.id;
+    const id = params?.id as string;
 
     useEffect(() => {
         fetchCategories();
@@ -48,7 +48,7 @@ export default function EditQuestionPage() {
             const response = await fetch('/api/admin/questions');
             if (response.ok) {
                 const questions = await response.json();
-                const question = questions.find((q: any) => q.id === parseInt(id as string));
+                const question = questions.find((q: any) => q.id === parseInt(id));
                 if (question) {
                     setTitle(question.title);
                     setContent(question.answer);
@@ -60,6 +60,7 @@ export default function EditQuestionPage() {
                 }
             }
         } catch (error) {
+            console.error('Erreur question:', error);
             setError('Erreur lors du chargement');
         } finally {
             setFetching(false);
@@ -96,18 +97,19 @@ export default function EditQuestionPage() {
                 setError(data.error || 'Erreur lors de la modification');
             }
         } catch (error) {
+            console.error('Erreur submission:', error);
             setError('Erreur lors de la modification');
         } finally {
             setLoading(false);
         }
     };
 
-    if (fetching) return <div className="p-8 text-center">Chargement...</div>;
+    if (fetching) return <div className="p-8 text-center text-gray-400">Chargement...</div>;
 
     return (
         <div className="max-w-4xl mx-auto">
             <div className="mb-6">
-                <Link href="/management/questions" className="flex items-center text-gray-600 hover:text-gray-900 mb-4">
+                <Link href="/management/questions" className="flex items-center text-gray-600 hover:text-gray-900 mb-4 transition-colors">
                     <ArrowLeft className="h-4 w-4 mr-1" /> Retour
                 </Link>
                 <h1 className="text-2xl font-bold text-gray-900">Modifier la Question</h1>
@@ -120,7 +122,7 @@ export default function EditQuestionPage() {
             )}
 
             <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="bg-white p-6 rounded-lg shadow space-y-6">
+                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 space-y-6">
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">Titre *</label>
                         <input
@@ -173,15 +175,15 @@ export default function EditQuestionPage() {
                             onChange={(e) => setIsPublished(e.target.checked)}
                             className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                         />
-                        <label htmlFor="published" className="ml-2 text-sm font-medium text-gray-700">Publiée</label>
+                        <label htmlFor="published" className="ml-2 text-sm font-medium text-gray-700 cursor-pointer">Publiée</label>
                     </div>
                 </div>
                 <div className="flex justify-end gap-3">
-                    <Link href="/management/questions" className="px-4 py-2 text-gray-700 bg-gray-100 rounded-md">Annuler</Link>
+                    <Link href="/management/questions" className="px-4 py-2 text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors">Annuler</Link>
                     <button
                         type="submit"
                         disabled={loading}
-                        className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
+                        className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 transition-colors"
                     >
                         <Save className="h-4 w-4 mr-2" />
                         {loading ? 'Enregistrement...' : 'Enregistrer'}

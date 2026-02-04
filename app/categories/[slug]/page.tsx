@@ -9,8 +9,8 @@ import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 
 interface CategoryPageProps {
-  params: { slug: string };
-  searchParams: { page?: string };
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ page?: string }>;
 }
 
 const QUESTIONS_PER_PAGE = 12;
@@ -51,8 +51,9 @@ async function getCategoryData(slug: string, page: number = 1) {
 }
 
 export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {
-  const data = await getCategoryData(params.slug);
-  
+  const { slug } = await params;
+  const data = await getCategoryData(slug);
+
   if (!data) {
     return {
       title: 'Catégorie introuvable'
@@ -66,9 +67,11 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
 }
 
 export default async function CategoryPage({ params, searchParams }: CategoryPageProps) {
-  const page = parseInt(searchParams.page || '1', 10);
-  const data = await getCategoryData(params.slug, page);
-  
+  const { slug } = await params;
+  const { page: pageStr } = await searchParams;
+  const page = parseInt(pageStr || '1', 10);
+  const data = await getCategoryData(slug, page);
+
   if (!data) {
     notFound();
   }
@@ -89,11 +92,11 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
-      
+
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Navigation */}
         <nav className="mb-6">
-          <Link 
+          <Link
             href="/"
             className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium"
           >
@@ -129,7 +132,7 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
-              baseUrl={`/categories/${params.slug}`}
+              baseUrl={`/categories/${slug}`}
               searchParams={new URLSearchParams()}
             />
           </>
@@ -138,7 +141,7 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
             <p className="text-gray-500 text-lg">
               Aucune question publiée dans cette catégorie pour le moment.
             </p>
-            <Link 
+            <Link
               href="/questions"
               className="inline-block mt-4 text-blue-600 hover:text-blue-700 font-medium"
             >
