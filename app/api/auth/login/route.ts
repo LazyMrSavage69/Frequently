@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { verifyPassword, generateJWT } from '@/lib/auth';
 import { cookies } from 'next/headers';
-
+//testing
 export async function POST(request: NextRequest) {
   try {
     const { email, password } = await request.json();
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
 
     const token = await generateJWT({ adminId: admin.id.toString() });
     const cookieStore = await cookies();
-    
+
     cookieStore.set('admin-token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
