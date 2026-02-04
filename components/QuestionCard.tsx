@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Eye, Calendar } from 'lucide-react';
+import { Eye, Calendar, Download } from 'lucide-react';
 import { type Question } from '@/lib/types';
 import { formatDate, truncateText } from '@/lib/utils';
 
@@ -12,8 +12,8 @@ export function QuestionCard({ question }: QuestionCardProps) {
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
       <div className="flex items-start justify-between gap-4">
         <div className="flex-1">
-          <Link 
-            href={`/questions/${question.slug}`} 
+          <Link
+            href={`/questions/${question.slug}`}
             className="text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors line-clamp-2"
           >
             {question.title}
@@ -23,16 +23,28 @@ export function QuestionCard({ question }: QuestionCardProps) {
           </p>
         </div>
       </div>
-      
+
       <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
-        <Link 
+        <Link
           href={`/categories/${question.category.slug}`}
           className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 hover:bg-blue-200 transition-colors"
         >
           {question.category.name}
         </Link>
-        
+
         <div className="flex items-center gap-4 text-sm text-gray-500">
+          {question.drive_link && (
+            <a
+              href={question.drive_link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 text-blue-600 hover:text-blue-700 font-medium"
+              title="Télécharger le PDF"
+            >
+              <Download className="h-4 w-4" />
+              <span className="hidden sm:inline">PDF</span>
+            </a>
+          )}
           <div className="flex items-center gap-1">
             <Eye className="h-4 w-4" />
             <span>{question.views_count}</span>

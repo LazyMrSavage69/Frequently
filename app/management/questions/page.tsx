@@ -56,7 +56,7 @@ export default function QuestionsPage() {
 
       if (response.ok) {
         // Mettre à jour la liste
-        setQuestions(questions.map(q => 
+        setQuestions(questions.map(q =>
           q.id === id ? { ...q, is_published: !currentStatus } : q
         ));
       }
@@ -83,12 +83,12 @@ export default function QuestionsPage() {
 
   const filteredQuestions = questions.filter(question => {
     const matchesSearch = question.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         question.category.name.toLowerCase().includes(searchQuery.toLowerCase());
-    
+      question.category.name.toLowerCase().includes(searchQuery.toLowerCase());
+
     if (filterPublished === 'all') return matchesSearch;
     if (filterPublished === 'published') return matchesSearch && question.is_published;
     if (filterPublished === 'draft') return matchesSearch && !question.is_published;
-    
+
     return matchesSearch;
   });
 
@@ -116,14 +116,6 @@ export default function QuestionsPage() {
 
         <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-            <input
-              type="text"
-              placeholder="Rechercher une question..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            />
           </div>
           <select
             value={filterPublished}
@@ -178,11 +170,10 @@ export default function QuestionsPage() {
                   <td className="px-6 py-4 whitespace-nowrap">
                     <button
                       onClick={() => togglePublished(question.id, question.is_published)}
-                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${ 
-                        question.is_published 
-                          ? 'bg-green-100 text-green-800 hover:bg-green-200' 
+                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${question.is_published
+                          ? 'bg-green-100 text-green-800 hover:bg-green-200'
                           : 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200'
-                      } transition-colors cursor-pointer`}
+                        } transition-colors cursor-pointer`}
                     >
                       {question.is_published ? (
                         <>
@@ -228,7 +219,7 @@ export default function QuestionsPage() {
         {filteredQuestions.length === 0 && (
           <div className="text-center py-12">
             <div className="text-gray-500 text-lg">
-              {searchQuery || filterPublished !== 'all' 
+              {searchQuery || filterPublished !== 'all'
                 ? 'Aucune question trouvée avec ces critères'
                 : 'Aucune question disponible'}
             </div>

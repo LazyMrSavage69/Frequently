@@ -1,5 +1,4 @@
 import { Suspense } from 'react';
-import { SearchForm } from '@/components/SearchForm';
 import { QuestionCard } from '@/components/QuestionCard';
 import { CategoryCard } from '@/components/CategoryCard';
 import { AdSlot } from '@/components/AdSlot';
@@ -44,7 +43,6 @@ export default async function HomePage() {
           Démarches, documents, procédures - tout en un seul endroit.
         </p>
         <div className="max-w-2xl mx-auto">
-          <SearchForm />
         </div>
       </section>
 

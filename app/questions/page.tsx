@@ -1,7 +1,7 @@
+import Link from 'next/link';
 import { Suspense } from 'react';
 import { prisma } from '@/lib/prisma';
 import { QuestionCard } from '@/components/QuestionCard';
-import { SearchForm } from '@/components/SearchForm';
 import { Pagination } from '@/components/Pagination';
 import { AdSlot } from '@/components/AdSlot';
 import { Question } from '@/lib/types';
@@ -82,34 +82,33 @@ export default async function QuestionsPage({ searchParams }: QuestionsPageProps
             Résultats pour « <span className="font-semibold">{q}</span> » : {totalCount} question{totalCount !== 1 ? 's' : ''}
           </p>
         )}
-        <SearchForm defaultValue={q} />
       </div>
 
       {/* Filtres par catégorie */}
       <div className="mb-8">
         <div className="flex flex-wrap gap-2">
-          <a
+          <Link
             href="/questions"
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-              !category
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-            }`}
+            replace={true}
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${!category
+              ? 'bg-blue-600 text-white'
+              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
           >
             Toutes
-          </a>
+          </Link>
           {categories.map((cat) => (
-            <a
+            <Link
               key={cat.id}
               href={`/questions?category=${cat.slug}`}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                category === cat.slug
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
+              replace={true}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${category === cat.slug
+                ? 'bg-blue-600 text-white'
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
             >
               {cat.name} ({cat._count.questions})
-            </a>
+            </Link>
           ))}
         </div>
       </div>

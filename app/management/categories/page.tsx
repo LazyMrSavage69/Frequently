@@ -59,7 +59,7 @@ export default function CategoriesPage() {
     }
   };
 
-  const filteredCategories = categories.filter(category => 
+  const filteredCategories = categories.filter(category =>
     category.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -85,18 +85,6 @@ export default function CategoriesPage() {
           </Link>
         </div>
 
-        <div className="max-w-md">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-            <input
-              type="text"
-              placeholder="Rechercher une catégorie..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            />
-          </div>
-        </div>
       </div>
 
       <div className="bg-white shadow rounded-lg overflow-hidden">
@@ -169,7 +157,7 @@ export default function CategoriesPage() {
         {filteredCategories.length === 0 && (
           <div className="text-center py-12">
             <div className="text-gray-500 text-lg">
-              {searchQuery 
+              {searchQuery
                 ? 'Aucune catégorie trouvée avec ce critère'
                 : 'Aucune catégorie disponible'}
             </div>
@@ -185,10 +173,10 @@ export default function CategoriesPage() {
           </div>
         )}
       </div>
-      
+
       <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-md">
         <div className="text-sm text-yellow-800">
-          <strong>Note :</strong> Les catégories qui contiennent des questions ne peuvent pas être supprimées. 
+          <strong>Note :</strong> Les catégories qui contiennent des questions ne peuvent pas être supprimées.
           Supprimez d'abord toutes les questions de la catégorie ou déplacez-les vers une autre catégorie.
         </div>
       </div>

@@ -15,6 +15,7 @@ export default function NewQuestionPage() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [categoryId, setCategoryId] = useState('');
+  const [driveUrl, setDriveUrl] = useState('');
   const [isPublished, setIsPublished] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(false);
@@ -54,7 +55,7 @@ export default function NewQuestionPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!title.trim() || !content.trim() || !categoryId) {
       setError('Veuillez remplir tous les champs obligatoires');
       return;
@@ -75,6 +76,7 @@ export default function NewQuestionPage() {
           answer: content.trim(),
           category_id: parseInt(categoryId),
           is_published: isPublished,
+          drive_link: driveUrl.trim() || null,
         }),
       });
 
@@ -164,6 +166,23 @@ export default function NewQuestionPage() {
             />
             <p className="mt-1 text-sm text-gray-500">
               Vous pouvez utiliser du HTML basique (p, strong, em, ul, ol, li, a, br).
+            </p>
+          </div>
+
+          <div>
+            <label htmlFor="drive_link" className="block text-sm font-medium text-gray-700 mb-2">
+              Lien Google Drive (PDF)
+            </label>
+            <input
+              type="url"
+              id="drive_link"
+              value={driveUrl}
+              onChange={(e) => setDriveUrl(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="https://drive.google.com/..."
+            />
+            <p className="mt-1 text-sm text-gray-500">
+              Lien vers un fichier PDF sur Google Drive.
             </p>
           </div>
 

@@ -92,9 +92,7 @@ npm run dev
 
 ### Accès Administration
 - **URL :** `http://localhost:3000/admin/login`
-- **Identifiants par défaut :**
-  - Email : `admin@admin-info.fr`
-  - Mot de passe : `admin123`
+- 
 
 ### Structure des URLs
 

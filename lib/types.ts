@@ -5,6 +5,7 @@ export interface Question {
   answer: string;
   category_id: number;
   is_published: boolean;
+  drive_link?: string | null;
   views_count: number;
   created_at: Date;
   updated_at: Date;

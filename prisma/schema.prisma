@@ -34,6 +34,7 @@ model Question {
   answer       String   @db.Text
   category_id  Int      @map("category_id")
   is_published Boolean  @default(false) @map("is_published")
+  drive_link   String?  @db.Text @map("drive_link")
   views_count  Int      @default(0) @map("views_count")
   created_at   DateTime @default(now()) @map("created_at")
   updated_at   DateTime @updatedAt @map("updated_at")
