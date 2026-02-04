@@ -9,24 +9,29 @@ import Link from 'next/link';
 import { FileSearch, Users, Book, Shield } from 'lucide-react';
 
 async function getHomePageData() {
-  const [popularQuestions, categories] = await Promise.all([
-    prisma.question.findMany({
-      where: { is_published: true },
-      include: { category: true },
-      orderBy: { views_count: 'desc' },
-      take: 6
-    }),
-    prisma.category.findMany({
-      include: {
-        _count: {
-          select: { questions: { where: { is_published: true } } }
-        }
-      },
-      take: 8
-    })
-  ]);
+  try {
+    const [popularQuestions, categories] = await Promise.all([
+      prisma.question.findMany({
+        where: { is_published: true },
+        include: { category: true },
+        orderBy: { views_count: 'desc' },
+        take: 6
+      }),
+      prisma.category.findMany({
+        include: {
+          _count: {
+            select: { questions: { where: { is_published: true } } }
+          }
+        },
+        take: 8
+      })
+    ]);
 
-  return { popularQuestions, categories };
+    return { popularQuestions, categories };
+  } catch (error) {
+    console.error("Prisma error during data fetch:", error);
+    return { popularQuestions: [], categories: [] };
+  }
 }
 
 export default async function HomePage() {
