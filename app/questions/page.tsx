@@ -1,4 +1,5 @@
 import Link from 'next/link';
+export const dynamic = 'force-dynamic';
 import { Suspense } from 'react';
 import { prisma } from '@/lib/prisma';
 import { QuestionCard } from '@/components/QuestionCard';

@@ -1,4 +1,5 @@
 import { Suspense } from 'react';
+export const dynamic = 'force-dynamic';
 import { QuestionCard } from '@/components/QuestionCard';
 import { CategoryCard } from '@/components/CategoryCard';
 import { AdSlot } from '@/components/AdSlot';
@@ -78,8 +79,8 @@ export default async function HomePage() {
       <section className="mb-12">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl font-bold text-gray-900">Questions populaires</h2>
-          <Link 
-            href="/questions" 
+          <Link
+            href="/questions"
             className="text-blue-600 hover:text-blue-700 font-medium"
           >
             Voir toutes →
@@ -101,12 +102,12 @@ export default async function HomePage() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {categories.map((category) => (
-            <CategoryCard 
-              key={category.id} 
+            <CategoryCard
+              key={category.id}
               category={{
                 ...category,
                 questionsCount: category._count.questions
-              } as Category & { questionsCount: number }} 
+              } as Category & { questionsCount: number }}
             />
           ))}
         </div>
