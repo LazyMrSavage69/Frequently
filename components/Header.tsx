@@ -8,8 +8,10 @@ export function Header() {
     <header className="bg-white shadow-sm border-b">
       <AdSlot position="header" />
       <div className="max-w-6xl mx-auto px-4 py-4">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <SearchForm className="flex-1 max-w-md mx-auto md:mx-0" />
+        <div className="flex items-center justify-between">
+          <Link href="/" className="text-xl font-bold text-blue-600">
+            Admin Info
+          </Link>
         </div>
       </div>
     </header>
